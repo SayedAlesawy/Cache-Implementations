@@ -98,6 +98,38 @@ namespace Cache.Tests
             Assert.AreEqual(ret, 4);
 
             Cache.Put(3, 5); //evicts key 0
+
+            ret = Cache.Get(0); //returns not found
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(KeyNotFoundException))]
+        public void Test4()
+        {
+            int Capacity = 3;
+
+            LRUCache<int, string> Cache = new LRUCache<int, string>(Capacity);
+            string ret = "";
+
+            Cache.Put(0, "Val0");
+            Cache.Put(1, "Val1");
+            Cache.Put(2, "Val2");
+
+            ret = Cache.Get(0); //returns Val0
+            Assert.AreEqual(ret, "Val0");
+
+            ret = Cache.Get(1); //returns Val1
+            Assert.AreEqual(ret, "Val1");
+
+            ret = Cache.Get(2); //returns Val2
+            Assert.AreEqual(ret, "Val2");
+
+            Cache.Put(2, "Val3");
+            ret = Cache.Get(2); //returns 4
+            Assert.AreEqual(ret, "Val3");
+
+            Cache.Put(3, "Val4"); //evicts key 0
+
             ret = Cache.Get(0); //returns not found
         }
     }
